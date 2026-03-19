@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safarulla S · video editor & videographer</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    /* === STYLES (fully responsive, with additions for profile image and button) === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #0b0b0f;   
+      font-family: 'Inter', sans-serif;
+      color: #f0f2f5;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    .violet {
+      color: #c77dff;
+    }
+    h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      border-left: 6px solid #c77dff;
+      padding-left: 1.2rem;
+    }
+    .card {
+      background: #16161e;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.6);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #2a2a33;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 25px 40px -12px #c77dff40;
+      border-color: #c77dff;
+    }
+    .lang-chip {
+      background: #2a2a33;
+      color: #e0e0e0;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: inline-block;
+      border: 1px solid #3a3a48;
+    }
+    .lang-chip i {
+      color: #c77dff;
+      margin-right: 6px;
+    }
+    .grid-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1.5rem;
+    }
+    .media-card {
+      background: #16161e;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 1px solid #2a2a33;
+      transition: 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .media-card:hover {
+      border-color: #c77dff;
+      transform: scale(1.01);
+    }
+    .media-thumb {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: #22222e;
+      overflow: hidden;
+    }
+    .media-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .play-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .media-card:hover .play-overlay {
+      opacity: 1;
+    }
+    .play-icon {
+      background: #c77dff;
+      color: #0b0b0f;
+      width: 52px;
+      height: 52px;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 0 20px #c77dffaa;
+    }
+    .media-caption {
+      padding: 1rem 1.2rem 1.2rem;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .media-caption span {
+      color: #c77dff;
+      font-size: 0.9rem;
+      background: #2a2a33;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+    }
+    .job-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .job-meta {
+      color: #b0b3c0;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px dashed #33333f;
+      padding-bottom: 0.8rem;
+    }
+    .job-meta i {
+      color: #c77dff;
+      width: 20px;
+    }
+    .job-points {
+      list-style: none;
+    }
+    .job-points li {
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+      display: flex;
+      gap: 0.7rem;
+    }
+    .job-points li i {
+      color: #c77dff;
+      font-size: 0.8rem;
+      margin-top: 0.2rem;
+      width: 1.2rem;
+    }
+    .profile-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 2rem;
+    }
+    .name-title h1 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .name-title .violet {
+      color: #c77dff;
+    }
+    .name-title .subhead {
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: #c0c4d0;
+      margin-top: 0.5rem;
+    }
+    .contact-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: #b0b3c0;
+    }
+    .contact-details i {
+      width: 1.2rem;
+    }
+    .profile-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .profile-badge {
+      background: #16161e;
+      border-radius: 60px;
+      padding: 0.6rem 1.5rem;
+      border: 1px solid #c77dff;
+      font-weight: 500;
+      box-shadow: 0 0 15px #c77dff30;
+      white-space: nowrap;
+    }
+    .profile-img {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      border: 3px solid #c77dff;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(199, 125, 255, 0.3);
+    }
+    .summary-card {
+      background: #1c1c26;
+      border-radius: 2rem;
+      padding: 2rem;
+      margin-bottom: 3.5rem;
+      border: 1px solid #32323e;
+      font-size: 1.1rem;
+      color: #dddee9;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 2.5rem 0;
+    }
+    .info-block {
+      background: #16161e;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid #2a2a33;
+    }
+    .info-block h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+      color: #c77dff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .skills-grid ul {
+      list-style: none;
+    }
+    .skills-grid li {
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+    }
+    .skills-grid li i {
+      color: #c77dff;
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+      width: 1.1rem;
+    }
+    .tech-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin: 1.2rem 0 1.8rem;
+    }
+    .tech-chips .lang-chip {
+      background: #22222e;
+    }
+    /* portfolio button */
+    .portfolio-btn-wrapper {
+      text-align: center;
+      margin: 3rem 0 2rem;
+    }
+    .portfolio-btn {
+      background: #c77dff;
+      color: #0b0b0f;
+      padding: 0.9rem 2.5rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.2rem;
+      text-decoration: none;
+      display: inline-block;
+      border: 2px solid #c77dff;
+      transition: all 0.2s;
+      box-shadow: 0 8px 20px rgba(199, 125, 255, 0.3);
+      letter-spacing: 0.5px;
+    }
+    .portfolio-btn i {
+      margin-right: 8px;
+    }
+    .portfolio-btn:hover {
+      background: transparent;
+      color: #c77dff;
+      transform: scale(1.02);
+      box-shadow: 0 12px 28px rgba(199, 125, 255, 0.5);
+    }
+    .footer-note {
+      text-align: center;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid #2a2a33;
+      color: #8a8c9a;
+    }
+    .footer-note i {
+      color: #c77dff;
+    }
+    @media (max-width: 768px) {
+      .profile-header { flex-direction: column; align-items: start; }
+      h2 { font-size: 1.8rem; }
+      .two-col { grid-template-columns: 1fr; }
+      .name-title h1 { font-size: 2.5rem; }
+      .contact-details { gap: 1rem; flex-wrap: wrap; }
+      .profile-right { margin-top: 0.5rem; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 1.5rem 1rem; }
+      .profile-img { width: 60px; height: 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER with profile picture -->
+    <div class="profile-header">
+      <div class="name-title">
+        <h1>SAFARULLA <span class="violet">S</span></h1>
+        <div class="subhead">Creative Video Editor & Videographer</div>
+        <div class="contact-details">
+          <span><i class="fas fa-phone-alt violet"></i> +971 56 715 8114</span>
+          <span><i class="fas fa-envelope violet"></i> darkxz4me@gmail.com</span>
+          <span><i class="fas fa-map-marker-alt violet"></i> Muwailah, Sharjah, UAE</span>
+        </div>
+      </div>
+      <div class="profile-right">
+        <div class="profile-badge">
+          <i class="fas fa-video violet" style="margin-right: 8px;"></i> 4+ years storytelling
+        </div>
+        <img class="profile-img" src="https://drive.google.com/thumbnail?id=12iLDXra-gzXek-qH98r17i4v_yv8WBpY&sz=w1000" alt="Safarulla profile">
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-card">
+      <p>🎬 Creative and detail-oriented Video Editor and Videographer with 4+ years of experience producing high-quality promotional videos, social media content, and event coverage. Skilled in cinematic storytelling, motion graphics, color grading, and full post-production workflows. Experienced working with professional production equipment and delivering engaging visual content for brands, events, and digital platforms.</p>
+    </div>
+
+    <!-- WORK HISTORY -->
+    <h2>WORK HISTORY</h2>
+    <div class="two-col" style="margin-top: 0;">
+      <div class="card">
+        <div class="job-title">Video Editor & Videographer</div>
+        <div class="job-meta"><i class="fas fa-building"></i> Media Square Event, Sharjah · <i class="fas fa-calendar"></i> 2025 – present</div>
+        <ul class="job-points">
+          <li><i class="fas fa-circle"></i> Produced and edited promotional videos, advertisements, and social media content.</li>
+          <li><i class="fas fa-circle"></i> Handled event videography and photography for commercial and entertainment events.</li>
+          <li><i class="fas fa-circle"></i> Performed professional color grading, motion graphics, and sound editing.</li>
+          <li><i class="fas fa-circle"></i> Worked with company production cameras including Sony A7M4 and Nikon Z50.</li>
+          <li><i class="fas fa-circle"></i> Managed complete post-production workflow from raw footage to final delivery.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="job-title">Social Media Marketing Intern</div>
+        <div class="job-meta"><i class="fas fa-building"></i> Qatar National Printing Press, Doha · <i class="fas fa-calendar"></i> 2021 – 2023</div>
+        <ul class="job-points">
+          <li><i class="fas fa-circle"></i> Developed social media content and marketing campaigns.</li>
+          <li><i class="fas fa-circle"></i> Engaged with audience comments and messages to improve brand interaction.</li>
+          <li><i class="fas fa-circle"></i> Researched digital trends to improve online presence and engagement.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="job-title">Senior Editor</div>
+        <div class="job-meta"><i class="fas fa-building"></i> Kalyanamatra Wedding, Kerala · <i class="fas fa-calendar"></i> 2019 – 2021</div>
+        <ul class="job-points">
+          <li><i class="fas fa-circle"></i> Edited cinematic wedding films and promotional trailers.</li>
+          <li><i class="fas fa-circle"></i> Implemented sound design and color grading for high-quality final output.</li>
+          <li><i class="fas fa-circle"></i> Led and supervised junior editors to improve editing workflow.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="job-title">Video Editor & Videographer</div>
+        <div class="job-meta"><i class="fas fa-building"></i> News Diary Keralam, Kerala · <i class="fas fa-calendar"></i> 2018 – 2019</div>
+        <ul class="job-points">
+          <li><i class="fas fa-circle"></i> Assisted in video production and editing for news broadcasts.</li>
+          <li><i class="fas fa-circle"></i> Coordinated with journalists and reporters for video content production.</li>
+          <li><i class="fas fa-circle"></i> Supported post-production and video publishing workflows.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FEATURED WORK -->
+    <h2 style="margin-top: 3rem;">FEATURED WORK</h2>
+    <div class="grid-gallery">
+      <!-- Featured 1 -->
+      <a class="media-card" href="https://drive.google.com/file/d/143BRcIrc8tHAIo4bvDfAaacx2fAliX84/view?usp=drive_link" target="_blank">
+        <div class="media-thumb">
+          <img src="https://drive.google.com/thumbnail?id=15pe4FJAE14iXwWzv4K8qu6wqJfObooWF&sz=w1000" alt="featured project 1">
+          <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+        </div>
+        <div class="media-caption">
+          <span>project 01</span>
+          <i class="fas fa-film violet"></i>
+        </div>
+      </a>
+      <!-- Featured 2 -->
+      <a class="media-card" href="https://drive.google.com/file/d/1JtsEZcRJtmyXUOvkInoxYcKHSK8OlzlG/view?usp=drive_link" target="_blank">
+        <div class="media-thumb">
+          <img src="https://drive.google.com/thumbnail?id=1p-O21hCn_Dg8OQ1iOtY_-Xt7wbsgvYWB&sz=w1000" alt="featured project 2">
+          <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+        </div>
+        <div class="media-caption">
+          <span>project 02</span>
+          <i class="fas fa-film violet"></i>
+        </div>
+      </a>
+      <!-- Featured 3 -->
+      <a class="media-card" href="https://drive.google.com/file/d/1ANp2qhGYJy6ANGRJw9WknscCQPNc61NT/view?usp=drive_link" target="_blank">
+        <div class="media-thumb">
+          <img src="https://drive.google.com/thumbnail?id=1DLIcawO69xVYpA77Uspf-A2RAWcn3gdd&sz=w1000" alt="featured project 3">
+          <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+        </div>
+        <div class="media-caption">
+          <span>project 03</span>
+          <i class="fas fa-film violet"></i>
+        </div>
+      </a>
+      <!-- Featured 4 -->
+      <a class="media-card" href="https://drive.google.com/file/d/1OUHOE5xUk45O3W0NjP-FZJr3cNuDSPKO/view?usp=drive_link" target="_blank">
+        <div class="media-thumb">
+          <img src="https://drive.google.com/thumbnail?id=10IZWvdrMrOZJUMy-e9rU5mtY7E1MeTHT&sz=w1000" alt="featured project 4">
+          <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+        </div>
+        <div class="media-caption">
+          <span>project 04</span>
+          <i class="fas fa-film violet"></i>
+        </div>
+      </a>
+    </div>
+
+    <!-- LATEST VIDEOS -->
+    <h2 style="margin-top: 3rem;">LATEST VIDEOS</h2>
+    <div class="grid-gallery">
+      <!-- Latest 1 -->
+      <a class="media-card" href="https://drive.google.com/file/d/1U4qlkHlx3QSKyspnVXG51S3O8eTih6hL/view?usp=sharing" target="_blank">
+        <div class="media-thumb">
+          <img src="https://drive.google.com/thumbnail?id=1UB7rtaSuyV5Ev0-_95q6_e1BsUGcq8Rn&sz=w1000" alt="wedding teaser">
+          <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+        </div>
+        <div class="media-caption">
+          <span>Video 1</span>
+          <i class="fas fa-video violet"></i>
+        </div>
+      </a>
+      <!-- Latest 2 -->
+      <a class="media-card" href="https://drive.google.com/file/d/1Jh0KA9bebhz-liIXV87KEqaJztz3g6x6/view?usp=drive_link" target="_blank">
+        <div class="media-thumb">
+          <img src="https://drive.google.com/thumbnail?id=1_DartQ3ofKoLElE1m65-euAJVgjf92Tb&sz=w1000" alt="corporate interview">
+          <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+        </div>
+        <div class="media-caption">
+          <span>Video 2</span>
+          <i class="fas fa-video violet"></i>
+        </div>
+      </a>
+      <!-- Latest 3 -->
+      <a class="media-card" href="https://drive.google.com/file/d/1v0pGqFDa_5N613l3Y4RAOi_jJSZ5Jru1/view?usp=drive_link" target="_blank">
+        <div class="media-thumb">
+          <img src="https://drive.google.com/thumbnail?id=1sStlhqqVqLBAG7I8MZoeSAhJ9wirmT8K&sz=w1000" alt="editing breakdown">
+          <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+        </div>
+        <div class="media-caption">
+          <span>Video 3</span>
+          <i class="fas fa-video violet"></i>
+        </div>
+      </a>
+      <!-- Latest 4 -->
+      <a class="media-card" href="https://drive.google.com/file/d/1VEwQCCxbVTqlq6tja9CCCxsbg2BN034k/view?usp=drive_link" target="_blank">
+        <div class="media-thumb">
+          <img src="https://drive.google.com/thumbnail?id=1syJsiS_rxTqyC-2s0V0w82J9ZvIS3U4q&sz=w1000" alt="event highlight">
+          <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+        </div>
+        <div class="media-caption">
+          <span>Video 4</span>
+          <i class="fas fa-video violet"></i>
+        </div>
+      </a>
+    </div>
+
+    <!-- SKILLS & EDUCATION -->
+    <div class="two-col" style="margin-top: 3rem;">
+      <div>
+        <div class="info-block" style="margin-bottom: 2rem;">
+          <h3><i class="fas fa-crown violet"></i> CORE SKILLS</h3>
+          <div class="skills-grid">
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Video Editing</li>
+              <li><i class="fas fa-check-circle"></i> Motion Graphics</li>
+              <li><i class="fas fa-check-circle"></i> Color Grading & Correction</li>
+              <li><i class="fas fa-check-circle"></i> Cinematography & Photography</li>
+              <li><i class="fas fa-check-circle"></i> Commercial & Event Videography</li>
+            </ul>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Social Media Video Production</li>
+              <li><i class="fas fa-check-circle"></i> Visual Storytelling</li>
+              <li><i class="fas fa-check-circle"></i> Sound Editing & Mixing</li>
+              <li><i class="fas fa-check-circle"></i> Post-Production Workflow</li>
+              <li><i class="fas fa-check-circle"></i> Creative Content Development</li>
+            </ul>
+          </div>
+        </div>
+        <div class="info-block" style="margin-bottom: 2rem;">
+          <h3><i class="fas fa-laptop-code violet"></i> TECHNICAL SKILLS</h3>
+          <div class="tech-chips">
+            <span class="lang-chip">Premiere Pro</span>
+            <span class="lang-chip">After Effects</span>
+            <span class="lang-chip">DaVinci Resolve</span>
+            <span class="lang-chip">Photoshop</span>
+            <span class="lang-chip">Illustrator</span>
+            <span class="lang-chip">CorelDRAW</span>
+            <span class="lang-chip">FL Studio</span>
+          </div>
+        </div>
+        <div class="info-block">
+          <h3><i class="fas fa-language violet"></i> LANGUAGES</h3>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.5rem;">
+            <span class="lang-chip"><i class="fas fa-comment"></i> Malayalam</span>
+            <span class="lang-chip"><i class="fas fa-comment"></i> English</span>
+            <span class="lang-chip"><i class="fas fa-comment"></i> Hindi</span>
+            <span class="lang-chip"><i class="fas fa-comment"></i> Tamil</span>
+          </div>
+          <p style="margin-top: 1.5rem; color: #aaaec0;"><i class="fas fa-circle-check violet"></i> fluent professional proficiency</p>
+        </div>
+      </div>
+      <div class="info-block">
+        <h3><i class="fas fa-graduation-cap violet"></i> EDUCATION</h3>
+        <p style="font-size: 1.3rem; font-weight: 600;">Bachelor's Degree, Video Editing</p>
+        <p style="color: #c77dff; margin: 0.3rem 0 0.8rem;">U Tech College – Attingal, India</p>
+        <p><i class="fas fa-calendar violet"></i> 2017 – 2018</p>
+        <div style="background: #2a2a33; height: 2px; width: 60px; margin: 1.2rem 0;"></div>
+        <p style="font-size: 1.1rem; font-weight: 500;">Higher Secondary</p>
+        <p style="color: #c77dff;">SSPBHS, Kadakkavur, Kerala</p>
+        <p><i class="fas fa-calendar violet"></i> (completed 2017)</p>
+        <div style="margin-top: 1rem; background: #2a2a33; height: 1px; width: 100%;"></div>
+        <p style="margin-top: 1rem; color: #bcbfd0;"><i class="fas fa-star violet"></i> specialised in post‑production & cinematography</p>
+      </div>
+    </div>
+
+    <!-- NEW PORTFOLIO BUTTON (links to full Google Drive folder) -->
+    <div class="portfolio-btn-wrapper">
+      <a href="https://drive.google.com/drive/folders/1EsnipOi4SHc0y4BVYkePprSiIEQR_WCd?usp=drive_link" target="_blank" class="portfolio-btn">
+        <i class="fas fa-folder-open"></i> View Full Portfolio (Google Drive)
+      </a>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-note">
+      <p><i class="fas fa-circle violet" style="font-size: 0.5rem; vertical-align: middle;"></i>  SAFARULLA S · video portfolio  <i class="fas fa-circle violet" style="font-size: 0.5rem; vertical-align: middle;"></i></p>
+      <p style="font-size: 0.9rem; margin-top: 0.8rem;">black · white · violet edition | video links active</p>
+    </div>
+  </div>
+</body>
+</html>
